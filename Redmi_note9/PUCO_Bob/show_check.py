@@ -61,16 +61,36 @@ def get_check_result(img_now):
         k = class_names[np.argmax(score)]
         print("当前页面为:",class_names[np.argmax(score)],100 * np.max(score))
     result = k
-    actions = ["news","video"]
+    actions = ["news","video","shop","list"]
     if result not in actions:
         result = "no action"
     return result
+is_debug = True
+is_doing = False
+is_left = True
+action_now = "None"
 while True:
-    base_img = cv.imread(get_android_img(),0)
-    # gray_img = cv.cvtColor(base_img, cv.COLOR_BGR2GRAY)
-    get_check_result(base_img)
-    cv.imshow("img",base_img)
-    key = cv.waitKey(1)
-    if key == ord("q"):
-        break
+    if is_debug:
+        base_img = cv.imread(get_android_img(),0)
+        action_now = get_check_result(base_img)
+        print(action_now)
+        cv.imshow("img",base_img)
+        key = cv.waitKey(1)
+        if key == ord("q"):
+            break
+    else:
+        if not is_doing:
+            base_img = cv.imread(get_android_img(),0)
+            action_now = get_check_result(base_img)
+            if action_now in ["news","video","shop","list"]:
+                is_doing = True
+            cv.imshow("img",base_img)
+            key = cv.waitKey(1)
+            if key == ord("q"):
+                break
+        else:
+            if action_now in ["list"]:
+                pass
+
+
 cv.destroyAllWindows()
