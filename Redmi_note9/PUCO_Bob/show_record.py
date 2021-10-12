@@ -55,6 +55,18 @@ while True:
         filename = "./temp/shop/shop_%s.jpg"%(time.time())
         cv.imwrite(filename,base_img)
         print("list:%s"%(filename))
+    elif key == ord("b"):
+        filename = "./temp/black/black_%s.jpg"%(time.time())
+        cv.imwrite(filename,base_img)
+        print("list:%s"%(filename))
+    elif key == ord("d"):
+        filename = "./temp/desktop/desktop_%s.jpg"%(time.time())
+        cv.imwrite(filename,base_img)
+        print("list:%s"%(filename))
+    elif key == ord("c"):
+        filename = "./temp/close/close_%s.jpg"%(time.time())
+        cv.imwrite(filename,base_img)
+        print("list:%s"%(filename))
 
 
 cv.destroyAllWindows()
