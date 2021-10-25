@@ -11,7 +11,7 @@ os.system("adb shell input tap 547 2140")
 time.sleep(2)
 
 print("选择图片")
-img_add_num = 6
+img_add_num = 7
 x_base = 307
 x_add = 365
 y_base = 413
@@ -33,6 +33,7 @@ time.sleep(2)
 print("打开浏览器")
 os.system("adb shell monkey -p com.android.browser -c android.intent.category.LAUNCHER 1")
 time.sleep(5)
+os.system("adb shell input tap 455 496")
 os.system("adb shell input swipe 455 496 455 496 1000")
 time.sleep(1)
 os.system("adb shell input tap 406 700")
@@ -50,6 +51,7 @@ time.sleep(2)
 print("打开浏览器")
 os.system("adb shell monkey -p com.android.browser -c android.intent.category.LAUNCHER 1")
 time.sleep(5)
+os.system("adb shell input tap 555 555")
 os.system("adb shell input swipe 555 555 555 555 1000")
 time.sleep(1)
 os.system("adb shell input tap 435 425")
