@@ -3,4 +3,4 @@ import time
 
 while True:
     print(pyautogui.position())
-    time.sleep(3)
+    time.sleep(2)
