@@ -20,9 +20,11 @@ $ ->
                 dom.text("查询")
                 if data.info == "ok"
                     result = data.result
+                    title = result["title"].replaceAll("puco","口红博主").replaceAll("唇泥","唇釉")
+                    content = result["content"].replaceAll("puco","口红博主").replaceAll("唇泥","唇釉")
                     $("input[data-name=json_file]").val(result["t"])
-                    $("input[data-name=article_title]").val(result["title"])
-                    $("textarea[data-name=article_content]").val(result["content"])
+                    $("input[data-name=article_title]").val(title)
+                    $("textarea[data-name=article_content]").val(content)
                     $(".line_images").empty()
                     time_now = (new Date()).getTime()
                     for i in result["image_links"]
@@ -45,8 +47,10 @@ $ ->
                 dom.text("查询")
                 if data.info == "ok"
                     result = data.result
-                    $("input[data-name=article_title]").val(result["title"])
-                    $("textarea[data-name=article_content]").val(result["content"])
+                    title = result["title"].replaceAll("puco","口红博主").replaceAll("唇泥","唇釉")
+                    content = result["content"].replaceAll("puco","口红博主").replaceAll("唇泥","唇釉")
+                    $("input[data-name=article_title]").val(title)
+                    $("textarea[data-name=article_content]").val(content)
                     $(".line_images").empty()
                     time_now = (new Date()).getTime()
                     for i in result["image_links"]
