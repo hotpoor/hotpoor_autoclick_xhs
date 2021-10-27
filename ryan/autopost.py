@@ -2,12 +2,16 @@
 import os
 import time
 from PIL import Image
-
+import shutil
 save = 1
-
 
 # ---refreshing the photos---
 def re_fresh_photo():
+
+    if frank == '1':
+        os.system('adb shell input tap 310 2100')
+        time.sleep(1)
+
     i = 1
 
     # edit
@@ -55,6 +59,7 @@ def select_photos():
 # adding photos into phone
 def push_photos():
     print(str(loop) + ' files detected. ')
+
     for i in pics:
         i1 = Image.open(local_path + i)
         i1.save(local_path + i)
@@ -62,6 +67,7 @@ def push_photos():
         print('file name: ' + i + ' sent to phone')
         time.sleep(1)
     print('all files has been sent... waitting system to respone..')
+    os.system('adb shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d file:///sdcard/DCIM/Camera')
     time.sleep(3)
 
 
@@ -72,15 +78,16 @@ def text():
     for line in f:
         if check == 0 and line[0] == 'T':
             os.system('adb shell input tap 311 634')
-            os.system("adb shell am broadcast -a ADB_INPUT_TEXT --es msg \'%s\'" % line[1:])
+            os.system("adb shell am broadcast -a ADB_INPUT_TEXT --es msg \'%s\'" % line.replace(' ', '\ ')[1:])
             check += 1
             os.system('adb shell input tap 330 824')
         else:
-            os.system('adb shell am broadcast -a ADB_INPUT_TEXT --es msg \'%s\' ' % line)
+            os.system('adb shell am broadcast -a ADB_INPUT_TEXT --es msg \'%s\' ' % line.replace(' ', '\ '))
             os.system('adb shell am broadcast -a ADB_INPUT_CODE --ei code 66')
     f.close()
 
 
+# frank = input('is this for Frank? if yes, enter "1", others enter any key to continue...')
 local_path = '/Users/ryan/Desktop/red/pics_for_post/'
 # sort file names (place photos with correct pattern)
 pics = os.listdir(local_path)
@@ -90,9 +97,10 @@ phone_path = '/sdcard/DCIM/Camera'
 loop = len(pics)
 loop_count = 0
 
+# --- push photos
 push_photos()
 
-# home
+'''# home
 os.system('adb shell input tap 555 2280')
 time.sleep(1)
 
@@ -107,9 +115,9 @@ time.sleep(1)
 # looping ->让手机tmd刷新一遍tmd相簿
 while loop_count != loop:
     re_fresh_photo()
-    loop_count += 1
+    loop_count += 1'''
 
-# open red
+# ---open red
 os.system("adb shell monkey -p com.xingin.xhs -c android.intent.category.LAUNCHER 1")
 time.sleep(5)
 
@@ -132,4 +140,5 @@ time.sleep(0.5)
 text()
 
 # done & send
+input()
 os.system('adb shell input tap 580 2111')
