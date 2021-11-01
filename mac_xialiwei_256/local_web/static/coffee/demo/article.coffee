@@ -21,8 +21,8 @@ $ ->
                 dom.text("查询")
                 if data.info == "ok"
                     result = data.result
-                    title = result["title"].toLocaleUpperCase().replaceAll("puco","口红博主").replaceAll("唇泥","唇釉")
-                    content = result["content"].toLocaleUpperCase().replaceAll("puco","口红博主").replaceAll("唇泥","唇釉")
+                    title = result["title"].toLocaleUpperCase().replaceAll("PUCO","口红博主").replaceAll("唇泥","唇釉")
+                    content = result["content"].toLocaleUpperCase().replaceAll("PUCO","口红博主").replaceAll("唇泥","唇釉")
                     $("input[data-name=json_file]").val(result["t"])
                     $("input[data-name=article_title]").val(title)
                     $("textarea[data-name=article_content]").val(content)
@@ -33,7 +33,7 @@ $ ->
                             <div><img class="line_images_div_img" src="#{i}"></div>
                         """
                     $(".line_author_info_img").attr "src",result["user_headimgurl"]
-                    $(".line_author_info_name").text result["user_name"]
+                    $(".line_author_info_name").val result["user_name"]
             error:(data)->
                 dom.text("解析失败")
     $("body").on "click",".get_json",(evt)->
@@ -50,8 +50,8 @@ $ ->
                 dom.text("查询")
                 if data.info == "ok"
                     result = data.result
-                    title = result["title"].toLocaleUpperCase().replaceAll("puco","口红博主").replaceAll("唇泥","唇釉")
-                    content = result["content"].toLocaleUpperCase().replaceAll("puco","口红博主").replaceAll("唇泥","唇釉")
+                    title = result["title"].toLocaleUpperCase().replaceAll("PUCO","口红博主").replaceAll("唇泥","唇釉")
+                    content = result["content"].toLocaleUpperCase().replaceAll("PUCO","口红博主").replaceAll("唇泥","唇釉")
                     $("input[data-name=article_title]").val(title)
                     $("textarea[data-name=article_content]").val(content)
                     $(".line_images").empty()
@@ -61,6 +61,18 @@ $ ->
                             <div><img class="line_images_div_img" src="#{i}"></div>
                         """
                     $(".line_author_info_img").attr "src",result["user_headimgurl"]
-                    $(".line_author_info_name").text result["user_name"]
+                    $(".line_author_info_name").val result["user_name"]
             error:(data)->
                 dom.text("解析失败")
+    $("body").on "click", ".copy_plus", (evt)->
+        dom = $(this)
+        copy_aim = dom.parents(".line").find(".copy_plus_content").select()
+        document.execCommand("Copy")
+
+
+
+
+
+
+
+

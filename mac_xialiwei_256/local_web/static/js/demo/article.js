@@ -29,8 +29,8 @@
           dom.text("查询");
           if (data.info === "ok") {
             result = data.result;
-            title = result["title"].toLocaleUpperCase().replaceAll("puco", "口红博主").replaceAll("唇泥", "唇釉");
-            content = result["content"].toLocaleUpperCase().replaceAll("puco", "口红博主").replaceAll("唇泥", "唇釉");
+            title = result["title"].toLocaleUpperCase().replaceAll("PUCO", "口红博主").replaceAll("唇泥", "唇釉");
+            content = result["content"].toLocaleUpperCase().replaceAll("PUCO", "口红博主").replaceAll("唇泥", "唇釉");
             $("input[data-name=json_file]").val(result["t"]);
             $("input[data-name=article_title]").val(title);
             $("textarea[data-name=article_content]").val(content);
@@ -42,7 +42,7 @@
               $(".line_images").append(`<div><img class="line_images_div_img" src="${i}"></div>`);
             }
             $(".line_author_info_img").attr("src", result["user_headimgurl"]);
-            return $(".line_author_info_name").text(result["user_name"]);
+            return $(".line_author_info_name").val(result["user_name"]);
           }
         },
         error: function(data) {
@@ -50,7 +50,7 @@
         }
       });
     });
-    return $("body").on("click", ".get_json", function(evt) {
+    $("body").on("click", ".get_json", function(evt) {
       var dom;
       dom = $(this);
       dom.text("解析中");
@@ -66,8 +66,8 @@
           dom.text("查询");
           if (data.info === "ok") {
             result = data.result;
-            title = result["title"].toLocaleUpperCase().replaceAll("puco", "口红博主").replaceAll("唇泥", "唇釉");
-            content = result["content"].toLocaleUpperCase().replaceAll("puco", "口红博主").replaceAll("唇泥", "唇釉");
+            title = result["title"].toLocaleUpperCase().replaceAll("PUCO", "口红博主").replaceAll("唇泥", "唇釉");
+            content = result["content"].toLocaleUpperCase().replaceAll("PUCO", "口红博主").replaceAll("唇泥", "唇釉");
             $("input[data-name=article_title]").val(title);
             $("textarea[data-name=article_content]").val(content);
             $(".line_images").empty();
@@ -78,13 +78,19 @@
               $(".line_images").append(`<div><img class="line_images_div_img" src="${i}"></div>`);
             }
             $(".line_author_info_img").attr("src", result["user_headimgurl"]);
-            return $(".line_author_info_name").text(result["user_name"]);
+            return $(".line_author_info_name").val(result["user_name"]);
           }
         },
         error: function(data) {
           return dom.text("解析失败");
         }
       });
+    });
+    return $("body").on("click", ".copy_plus", function(evt) {
+      var copy_aim, dom;
+      dom = $(this);
+      copy_aim = dom.parents(".line").find(".copy_plus_content").select();
+      return document.execCommand("Copy");
     });
   });
 

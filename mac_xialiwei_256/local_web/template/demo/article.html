@@ -16,7 +16,7 @@
             font-size: 12px;
             color: #666;
         }
-        .line_input>input,.line_input>textarea{
+        .line_input>input,.line_input>textarea,.line_author_info_name{
             border: 1px solid #ccc;
             border-radius: 6px;
             padding: 8px 10px;
@@ -51,6 +51,17 @@
             width: 40px;
             height: 40px;
         }
+        .copy_plus{
+            margin: 2px 5px;
+            width: 60px;
+            height: 24px;
+            border-radius: 2px;
+            color: white;
+            background: #f5c5c5;
+            border: 0;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -69,19 +80,19 @@
         </div>
     </div>
     <div class="line">
-        <div class="line_title">作者信息</div>
+        <div class="line_title">作者信息<button class="copy_plus">copy</button></div>
         <div class="line_author_info">
             <div><img class="line_author_info_img" src="/static/img/loading.gif"></div>
-            <div><p class="line_author_info_name"></p></div>
+            <div><input class="line_author_info_name copy_plus_content"></div>
         </div>
     </div>
     <div class="line">
-        <div class="line_title">原文标题</div>
-        <div class="line_input"><input type="" name="" data-name="article_title"></div>
+        <div class="line_title">原文标题<button class="copy_plus">copy</button></div>
+        <div class="line_input"><input type="" name="" data-name="article_title" class="copy_plus_content"></div>
     </div>
     <div class="line">
-        <div class="line_title">原文内容</div>
-        <div class="line_input"><textarea data-name="article_content"></textarea></div>
+        <div class="line_title">原文内容<button class="copy_plus">copy</button></div>
+        <div class="line_input"><textarea data-name="article_content" class="copy_plus_content"></textarea></div>
     </div>
     <div class="line">
         <div class="line_title">原文图片</div>
