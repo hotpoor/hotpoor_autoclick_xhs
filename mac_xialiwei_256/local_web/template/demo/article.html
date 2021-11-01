@@ -43,6 +43,14 @@
             height: 60px;
             object-fit: cover;
         }
+        .line_author_info{
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .line_author_info_img{
+            width: 40px;
+            height: 40px;
+        }
     </style>
 </head>
 <body>
@@ -58,6 +66,13 @@
         <div class="line_input"><input type="" name="" data-name="short_link"></div>
         <div class="line_btns">
             <button class="line_btns_btn get_info">查询</button>
+        </div>
+    </div>
+    <div class="line">
+        <div class="line_title">作者信息</div>
+        <div class="line_author_info">
+            <div><img class="line_author_info_img" src="/static/img/loading.gif"></div>
+            <div><p class="line_author_info_name"></p></div>
         </div>
     </div>
     <div class="line">

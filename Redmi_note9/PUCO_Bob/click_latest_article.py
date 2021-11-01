@@ -7,7 +7,7 @@ num = 0
 click_type = "news"
 while True:
     print("点击次数:%s"%(num))
-    os.system("adb -s %s shell input tap 80 1050"%(device_id))
+    os.system("adb -s %s shell input tap 80 1250"%(device_id))
     time.sleep(3)
     if click_type in ["news"]:
         os.system("adb -s %s shell input tap 70 150"%(device_id))

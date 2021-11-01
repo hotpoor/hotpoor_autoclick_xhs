@@ -62,7 +62,7 @@ def get_check_result(img_now):
         print("当前页面为:",class_names[np.argmax(score)],100 * np.max(score))
     else:
         k = class_names[np.argmax(score)]
-        print("80分以下当前页面为:",class_names[np.argmax(score)],100 * np.max(score))
+        print("70分以下当前页面为:",class_names[np.argmax(score)],100 * np.max(score))
 
     result = k
     actions = ["news","video","shop","list"]

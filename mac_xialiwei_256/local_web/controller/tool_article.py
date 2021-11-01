@@ -28,31 +28,57 @@ def get_article_info(short_link):
     num = 0
     image_links = []
     t = int(round(time.time() * 1000))  # 毫秒级时间戳
-    for div_i_img in div_i_imgs:
-        link ="https://%s?imageView2/2/w/1080/format/jpg"%(div_i_img.get_attribute("style").split("https://")[1].split("?imageView2/2/")[0])
-        aim_url = link
+    t = browser.current_url.split("/")[5]
+    t_is_exists = os.path.exists(os.path.join(os.path.dirname(__file__),'../static/files/%s.%s'%(t,"json")))
+
+    if not t_is_exists:
+
+        headimgurl_parent = browser.find_element_by_class_name("author-item")
+        headimgurl = headimgurl_parent.find_element_by_class_name("author-info").find_element_by_class_name("left-img").find_elements_by_tag_name("img")[0].get_attribute("src")
+        aim_url = headimgurl
         print(aim_url)
         aim_response = requests.get(aim_url)
-        f = open(os.path.join(os.path.dirname(__file__),'../static/upload/%s_%s.%s'%(t,num,"jpg")), "ab")
+        f = open(os.path.join(os.path.dirname(__file__),'../static/upload/%s_%s.%s'%(t,"head","jpg")), "ab")
         f.write(aim_response.content)  # 多媒体存储content
         f.close()
-        image_links.append("/static/upload/%s_%s.%s"%(t,num,"jpg"))
-        num +=1
-    print(num)
-    title = browser.find_element_by_class_name("title").text
-    content = browser.find_element_by_class_name("content").text
-    result = {
-        "type":"news",
-        "image_num":num,
-        "title":title,
-        "content":content,
-        "image_links":image_links,
-        "t":t
-    }
-    result_json = json_encode(result)
-    f = open(os.path.join(os.path.dirname(__file__),'../static/files/%s.%s'%(t,"json")), "ab")
-    f.write(result_json.encode())  # 多媒体存储content
-    f.close()
+        headimgurl = '/static/upload/%s_%s.%s'%(t,"head","jpg")
+        username = browser.find_element_by_class_name("author-item").find_element_by_class_name("author-info").find_element_by_class_name("name").text
+        for div_i_img in div_i_imgs:
+            link ="https://%s?imageView2/2/w/1080/format/jpg"%(div_i_img.get_attribute("style").split("https://")[1].split("?imageView2/2/")[0])
+            aim_url = link
+            print(aim_url)
+            aim_response = requests.get(aim_url)
+            f = open(os.path.join(os.path.dirname(__file__),'../static/upload/%s_%s.%s'%(t,num,"jpg")), "ab")
+            f.write(aim_response.content)  # 多媒体存储content
+            f.close()
+            image_links.append("/static/upload/%s_%s.%s"%(t,num,"jpg"))
+            num +=1
+        print(num)
+        title = browser.find_element_by_class_name("title").text
+        content = browser.find_element_by_class_name("content").text
+        browser.find_element_by_class_name("author-item").find_element_by_class_name("author-info").click()
+        time.sleep(3)
+        browser.switch_to.window(browser.window_handles[1])
+        user_xhs = browser.current_url.split("/user/profile/")[1]
+        result = {
+            "short_link":short_link,
+            "type":"news",
+            "image_num":num,
+            "title":title,
+            "content":content,
+            "image_links":image_links,
+            "t":t,
+            "user_headimgurl":headimgurl,
+            "user_name":username,
+            "user_xhs":user_xhs,
+        }
+        result_json = json_encode(result)
+        f = open(os.path.join(os.path.dirname(__file__),'../static/files/%s.%s'%(t,"json")), "ab")
+        f.write(result_json.encode())  # 多媒体存储content
+        f.close()
+    else:
+        f = open(os.path.join(os.path.dirname(__file__),'../static/files/%s.%s'%(t,"json"))).read()
+        result = json_decode(f)
     browser.quit()
     return result
 
