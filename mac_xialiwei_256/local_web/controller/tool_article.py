@@ -15,28 +15,62 @@ import urllib.request
 import sys
 from selenium import webdriver
 import time
-
 import cv2
 import numpy as np
 
+
+from PIL import Image, ImageDraw
+
+img_png_path = os.path.join(os.path.dirname(__file__),'../static/headimg/')
+# Open the input image as numpy array, convert to RGB
+img = Image.open(img_png_path).convert("RGB")
+
+npImage = np.array(img)
+h, w = img.size
+# Create same size alpha layer with circle
+alpha = Image.new('L', img.size, 0)
+draw = ImageDraw.Draw(alpha)
+draw.pieslice([0, 0, h, w], 0, 360, fill=255)
+# Convert alpha Image to numpy array
+npAlpha = np.array(alpha)
+# Add alpha layer to RGB
+npImage = np.dstack((npImage, npAlpha))
+# Save with alpha
+i = Image.fromarray(npImage)
+# 修改像素
+i.thumbnail(size=(100, 100), resample=Image.ANTIALIAS)
+i.save('/Users/ryan/PycharmProjects/web2.0/local_web/static/icon/icon.png')
+
+def uppicture_function():
+    imgs= os.listdir("C:/Users/ASUS/Documents/GitHub/hotpoor_autoclick_xhs/mac_xialiwei_256/local_web/static/upload")
+    num =0
+    for img_jpg_path in imgs:
+        num+=1
+        print(img_jpg_path)
+        img_jpg = cv2.imread("C:/Users/ASUS/Documents/GitHub/hotpoor_autoclick_xhs/mac_xialiwei_256/local_web/static/upload/%s"%img_jpg_path)
+        res_img = cv2.resize(img_jpg,(600,800))
+        # 保存结果图像，读者可自行修改文件路径
+        cv2.imwrite("C:/Users/ASUS/Documents/GitHub/hotpoor_autoclick_xhs/mac_xialiwei_256/local_web/static/uppicture/%s.jpg"%num, res_img)
+
 def add_alpha_channel(img):
     """ 为jpg图像添加alpha通道 """
- 
+
     b_channel, g_channel, r_channel = cv2.split(img) # 剥离jpg图像通道
     alpha_channel = np.ones(b_channel.shape, dtype=b_channel.dtype) * 255 # 创建Alpha通道
- 
+
     img_new = cv2.merge((b_channel, g_channel, r_channel, alpha_channel)) # 融合通道
     return img_new
- 
+
 def merge_img(jpg_img, png_img, y1, y2, x1, x2):
     """ 将png透明图像与jpg图像叠加 
         y1,y2,x1,x2为叠加位置坐标值
     """
-    
+
+
     # 判断jpg图像是否已经为4通道
     if jpg_img.shape[2] == 3:
         jpg_img = add_alpha_channel(jpg_img)
-    
+
     '''
     当叠加图像时，可能因为叠加位置设置不当，导致png图像的边界超过背景jpg图像，而程序报错
     这里设定一系列叠加位置的限制，可以满足png图像超出jpg图像范围时，依然可以正常叠加
@@ -45,7 +79,7 @@ def merge_img(jpg_img, png_img, y1, y2, x1, x2):
     yy2 = png_img.shape[0]
     xx1 = 0
     xx2 = png_img.shape[1]
- 
+
     if x1 < 0:
         xx1 = -x1
         x1 = 0
@@ -58,15 +92,16 @@ def merge_img(jpg_img, png_img, y1, y2, x1, x2):
     if y2 > jpg_img.shape[0]:
         yy2 = png_img.shape[0] - (y2 - jpg_img.shape[0])
         y2 = jpg_img.shape[0]
- 
+
+
     # 获取要覆盖图像的alpha值，将像素值除以255，使值保持在0-1之间
     alpha_png = png_img[yy1:yy2,xx1:xx2,3] / 255.0
     alpha_jpg = 1 - alpha_png
-    
+
     # 开始叠加
     for c in range(0,3):
         jpg_img[y1:y2, x1:x2, c] = ((alpha_jpg*jpg_img[y1:y2,x1:x2,c]) + (alpha_png*png_img[yy1:yy2,xx1:xx2,c]))
- 
+
     return jpg_img
 
 @tornado.gen.coroutine
@@ -91,36 +126,50 @@ def get_article_info(short_link):
         aim_url = headimgurl
         print(aim_url)
         aim_response = requests.get(aim_url)
-        f = open(os.path.join(os.path.dirname(__file__),'../static/upload/%s_%s.%s'%(t,"head","jpg")), "ab")
+        f = open(os.path.join(os.path.dirname(__file__),'../static/headimg/%s_%s.%s'%(t,"head","jpg")), "ab")
         f.write(aim_response.content)  # 多媒体存储content
         f.close()
 
 
-        img_jpg_path = os.path.join(os.path.dirname(__file__),'../static/upload/%s_%s.%s'%(t,"head","jpg"))
+        img_jpg_path = os.path.join(os.path.dirname(__file__),'../static/headimg/%s_%s.%s'%(t,"head","jpg"))
         img_png_path = os.path.join(os.path.dirname(__file__),'../static/img/xhs_head_cover.png')
-     
+
+
         # 读取图像
         img_jpg = cv2.imread(img_jpg_path, cv2.IMREAD_UNCHANGED)
         img_png = cv2.imread(img_png_path, cv2.IMREAD_UNCHANGED)
         img_jpg = cv2.resize(img_jpg,(200,200))
         img_png = cv2.resize(img_png,(200,200))
-     
+
         # 设置叠加位置坐标
         x1 = 0
         y1 = 0
         x2 = x1 + img_png.shape[1]
         y2 = y1 + img_png.shape[0]
-     
+
+
         # 开始叠加
         res_img = merge_img(img_jpg, img_png, y1, y2, x1, x2)
-     
+
         # 显示结果图像
         # cv2.imshow('result', res_img)
-     
+
         # 保存结果图像，读者可自行修改文件路径
         cv2.imwrite(img_jpg_path, res_img)
 
-        headimgurl = '/static/upload/%s_%s.%s'%(t,"head","jpg")
+        headimgurl = '/static/headimg/%s_%s.%s'%(t,"head","jpg")
+
+        imgs= os.listdir("C:/Users/ASUS/Documents/GitHub/hotpoor_autoclick_xhs/mac_xialiwei_256/local_web/static/upload")
+        num =0
+        for img_jpg_path in imgs:
+            num+=2
+            print(img_jpg_path)
+            img_jpg = cv2.imread("C:/Users/ASUS/Documents/GitHub/hotpoor_autoclick_xhs/mac_xialiwei_256/local_web/static/upload/%s"%img_jpg_path)
+            res_img = cv2.resize(img_jpg,(600,800))
+            # 保存结果图像，读者可自行修改文件路径
+            cv2.imwrite("C:/Users/ASUS/Documents/GitHub/hotpoor_autoclick_xhs/mac_xialiwei_256/local_web/static/uppicture/%s.jpg"%num, res_img)
+
+
         username = browser.find_element_by_class_name("author-item").find_element_by_class_name("author-info").find_element_by_class_name("name").text
         for div_i_img in div_i_imgs:
             link ="https://%s?imageView2/2/w/1080/format/jpg"%(div_i_img.get_attribute("style").split("https://")[1].split("?imageView2/2/")[0])
@@ -151,6 +200,12 @@ def get_article_info(short_link):
             "user_name":username,
             "user_xhs":user_xhs,
         }
+        #修改图片尺寸
+        uppicture_function()
+
+
+        #把图片合成视频
+        os.system("ffmpeg -y -r 1 -f image2 -i C:/Users/ASUS/Documents/GitHub/hotpoor_autoclick_xhs/mac_xialiwei_256/local_web/static/uppicture/%d.jpg C:/Users/ASUS/Documents/GitHub/hotpoor_autoclick_xhs/mac_xialiwei_256/local_web/static/picture_videos/tt.mp4")
         result_json = json_encode(result)
         f = open(os.path.join(os.path.dirname(__file__),'../static/files/%s.%s'%(t,"json")), "ab")
         f.write(result_json.encode())  # 多媒体存储content
