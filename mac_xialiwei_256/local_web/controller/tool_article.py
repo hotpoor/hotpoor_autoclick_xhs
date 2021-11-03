@@ -18,6 +18,7 @@ import time
 import cv2
 import numpy as np
 
+
 from PIL import Image, ImageDraw
 
 img_png_path = os.path.join(os.path.dirname(__file__),'../static/headimg/')
@@ -65,6 +66,7 @@ def merge_img(jpg_img, png_img, y1, y2, x1, x2):
         y1,y2,x1,x2为叠加位置坐标值
     """
 
+
     # 判断jpg图像是否已经为4通道
     if jpg_img.shape[2] == 3:
         jpg_img = add_alpha_channel(jpg_img)
@@ -91,6 +93,7 @@ def merge_img(jpg_img, png_img, y1, y2, x1, x2):
         yy2 = png_img.shape[0] - (y2 - jpg_img.shape[0])
         y2 = jpg_img.shape[0]
 
+
     # 获取要覆盖图像的alpha值，将像素值除以255，使值保持在0-1之间
     alpha_png = png_img[yy1:yy2,xx1:xx2,3] / 255.0
     alpha_jpg = 1 - alpha_png
@@ -100,6 +103,7 @@ def merge_img(jpg_img, png_img, y1, y2, x1, x2):
         jpg_img[y1:y2, x1:x2, c] = ((alpha_jpg*jpg_img[y1:y2,x1:x2,c]) + (alpha_png*png_img[yy1:yy2,xx1:xx2,c]))
 
     return jpg_img
+
 @tornado.gen.coroutine
 def get_article_info(short_link):
     # short_link = argv_dir.get("--link",None)
@@ -126,8 +130,10 @@ def get_article_info(short_link):
         f.write(aim_response.content)  # 多媒体存储content
         f.close()
 
+
         img_jpg_path = os.path.join(os.path.dirname(__file__),'../static/headimg/%s_%s.%s'%(t,"head","jpg"))
         img_png_path = os.path.join(os.path.dirname(__file__),'../static/img/xhs_head_cover.png')
+
 
         # 读取图像
         img_jpg = cv2.imread(img_jpg_path, cv2.IMREAD_UNCHANGED)
@@ -140,6 +146,7 @@ def get_article_info(short_link):
         y1 = 0
         x2 = x1 + img_png.shape[1]
         y2 = y1 + img_png.shape[0]
+
 
         # 开始叠加
         res_img = merge_img(img_jpg, img_png, y1, y2, x1, x2)
@@ -161,6 +168,7 @@ def get_article_info(short_link):
             res_img = cv2.resize(img_jpg,(600,800))
             # 保存结果图像，读者可自行修改文件路径
             cv2.imwrite("C:/Users/ASUS/Documents/GitHub/hotpoor_autoclick_xhs/mac_xialiwei_256/local_web/static/uppicture/%s.jpg"%num, res_img)
+
 
         username = browser.find_element_by_class_name("author-item").find_element_by_class_name("author-info").find_element_by_class_name("name").text
         for div_i_img in div_i_imgs:
