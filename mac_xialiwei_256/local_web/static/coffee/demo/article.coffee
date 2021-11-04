@@ -10,33 +10,41 @@ $ ->
         for k,v of imgs
             console.log k,v
     img_link_with_head_do = (d,h,num)->
+        bw = 900
+        bh = 1200
+        aw = 200
+        ah = 200
+        cw = 360
+        ch = 90
+        pzcx = 100
+        pzcy = 200
         d_w = d.width
         d_h = d.height
         h_w = h.width
         h_h = h.height
         c = document.createElement("canvas")
-        c.width = 600
-        c.height = 800
+        c.width = bw
+        c.height = bh
         ct = c.getContext("2d")
         x0 = 0
         y0 = 0
-        x1 = 600
-        y1 = 800
+        x1 = bw
+        y1 = bh
         if d_w >= d_h
             x0 = 0
-            x1 = 0
-            y0 = parseInt((y1 - (600 / d_w * d_h))/2)
-            y1 = parseInt(y0 + (600 / d_w * d_h))
+            x1 = bw
+            y0 = parseInt((y1 - (bw / d_w * d_h))/2)
+            y1 = parseInt(bw / d_w * d_h)
         else
             y0 = 0
-            y1 = 800
-            x0 = parseInt((x1 - (800 / d_h * d_w))/2)
-            x1 = parseInt(x0 + (800 / d_h * d_w))
-
-        ct.drawImage(d,x0,y0,x1,y1)
-        ct.drawImage(h,0,0,h_w,h_h,250,350,100,100)
+            y1 = bh
+            x0 = parseInt((x1 - (bh / d_h * d_w))/2)
+            x1 = parseInt(x0 + (bh / d_h * d_w))
+        console.log x0,y0,x1,y1
+        ct.drawImage(d,0,0,d_w,d_h,x0,y0,x1,y1)
+        ct.drawImage(h,0,0,h_w,h_h,parseInt((bw-aw)/2)+pzcx,parseInt((bh-ah)/2)+pzcy,aw,ah)
         cover_logo = $("#cover_logo")[0]
-        ct.drawImage(cover_logo,0,0,1000,250,200,450,200,50)
+        ct.drawImage(cover_logo,0,0,1000,250,parseInt((bw-cw)/2)+pzcx,parseInt((bh)/2+ah/2)+pzcy,cw,ch)
         
         $(".img_made[data-num=#{num}]").attr "src",c.toDataURL()
     img_link_with_head = (url,headimgurl,num)->
@@ -158,6 +166,7 @@ $ ->
         document.execCommand("Copy")
 
     $("body").on "click",".make_video",(evt)->
+        $(".download_video").remove()
         img_doms = $(".img_made")
         imgs = []
         for img_dom in img_doms
@@ -171,6 +180,9 @@ $ ->
                 imgs:JSON.stringify(imgs)
             success:(data)->
                 console.log data
+                $(".make_video").after """
+                    <button class="line_btns_btn download_video">Download</button>
+                """
             error:(data)->
                 console.log data
 

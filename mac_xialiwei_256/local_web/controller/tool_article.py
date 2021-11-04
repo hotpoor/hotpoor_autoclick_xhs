@@ -103,8 +103,8 @@ def get_article_info(short_link):
         # 读取图像
         img_jpg = cv2.imread(img_jpg_path, cv2.IMREAD_UNCHANGED)
         img_png = cv2.imread(img_png_path, cv2.IMREAD_UNCHANGED)
-        img_jpg = cv2.resize(img_jpg,(200,200))
-        img_png = cv2.resize(img_png,(200,200))
+        img_jpg = cv2.resize(img_jpg,(400,400))
+        img_png = cv2.resize(img_png,(400,400))
      
         # 设置叠加位置坐标
         x1 = 0
@@ -186,8 +186,6 @@ class MakeVideoArticleAPIHandler(tornado.web.RequestHandler):
             img_remove_list.append(img_path_jpg)
         imgs_path = os.path.join(os.path.dirname(__file__),'../static/temp')
         video_path = os.path.join(os.path.dirname(__file__),'../static/temp')
-        os_cmd = "ffmpeg -y -r 1 -f image2 -i %s/%s_%%d.%s -vcodec libx264 %s/%s.mp4"%(imgs_path,t,"jpg",video_path,t)
-        print(os_cmd)
         os.system("ffmpeg -y -r 1 -f image2 -i %s/%s_%%d.%s -vcodec libx264 %s/%s.mp4"%(imgs_path,t,"jpg",video_path,t))
         for img_path in img_remove_list:
             os.remove(img_path)
