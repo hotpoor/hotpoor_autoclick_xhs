@@ -17,6 +17,7 @@ from selenium import webdriver
 import time
 import cv2
 import numpy as np
+import base64
 
 
 from PIL import Image, ImageDraw
@@ -116,7 +117,7 @@ def get_article_info(short_link):
     num = 0
     image_links = []
     t = int(round(time.time() * 1000))  # 毫秒级时间戳
-    t = browser.current_url.split("/")[5]
+    t = browser.current_url.split("/")[5].split("?")[0]
     t_is_exists = os.path.exists(os.path.join(os.path.dirname(__file__),'../static/files/%s.%s'%(t,"json")))
 
     if not t_is_exists:
@@ -215,7 +216,37 @@ def get_article_info(short_link):
         result = json_decode(f)
     browser.quit()
     return result
-
+class MakeVideoArticleAPIHandler(tornado.web.RequestHandler):
+    @tornado.gen.coroutine
+    def post(self):
+        imgs = json_decode(self.get_argument("imgs","[]"))
+        t = self.get_argument("t",None)
+        if not t:
+            self.finish({"info":"error"})
+            return
+        num = 0
+        img_remove_list = []
+        for img in imgs:
+            b64_data = img.split(';base64,')[1]
+            data = base64.b64decode(b64_data)
+            img_path = os.path.join(os.path.dirname(__file__),'../static/temp/%s_%s.%s'%(t,num,"png"))
+            img_path_jpg = os.path.join(os.path.dirname(__file__),'../static/temp/%s_%s.%s'%(t,num,"jpg"))
+            f = open(img_path, "ab")
+            f.write(data)  # 多媒体存储content
+            f.close()
+            f_cv = cv2.imread(img_path)
+            cv2.imwrite(img_path_jpg,f_cv)
+            num +=1
+            img_remove_list.append(img_path)
+            img_remove_list.append(img_path_jpg)
+        imgs_path = os.path.join(os.path.dirname(__file__),'../static/temp')
+        video_path = os.path.join(os.path.dirname(__file__),'../static/temp')
+        os_cmd = "ffmpeg -y -r 1 -f image2 -i %s/%s_%%d.%s -vcodec libx264 %s/%s.mp4"%(imgs_path,t,"jpg",video_path,t)
+        print(os_cmd)
+        os.system("ffmpeg -y -r 1 -f image2 -i %s/%s_%%d.%s -vcodec libx264 %s/%s.mp4"%(imgs_path,t,"jpg",video_path,t))
+        for img_path in img_remove_list:
+            os.remove(img_path)
+        self.finish({"info":"ok","video":"/static/temp/%s.mp4"%(t)})
 
 
 class ArticleDemoHandler(tornado.web.RequestHandler):

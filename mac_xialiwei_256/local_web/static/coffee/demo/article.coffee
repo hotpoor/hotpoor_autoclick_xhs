@@ -157,6 +157,24 @@ $ ->
         copy_aim = dom.parents(".line").find(".copy_plus_content").select()
         document.execCommand("Copy")
 
+    $("body").on "click",".make_video",(evt)->
+        img_doms = $(".img_made")
+        imgs = []
+        for img_dom in img_doms
+            imgs.push img_dom.src
+        $.ajax
+            url:"/api/tool/article/make_video"
+            type: "POST"
+            dataType: "json"
+            data:
+                t:$("input[data-name=json_file]").val()
+                imgs:JSON.stringify(imgs)
+            success:(data)->
+                console.log data
+            error:(data)->
+                console.log data
+
+
 
 
 

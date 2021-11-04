@@ -194,11 +194,35 @@
         }
       });
     });
-    return $("body").on("click", ".copy_plus", function(evt) {
+    $("body").on("click", ".copy_plus", function(evt) {
       var copy_aim, dom;
       dom = $(this);
       copy_aim = dom.parents(".line").find(".copy_plus_content").select();
       return document.execCommand("Copy");
+    });
+    return $("body").on("click", ".make_video", function(evt) {
+      var img_dom, img_doms, imgs, j, len;
+      img_doms = $(".img_made");
+      imgs = [];
+      for (j = 0, len = img_doms.length; j < len; j++) {
+        img_dom = img_doms[j];
+        imgs.push(img_dom.src);
+      }
+      return $.ajax({
+        url: "/api/tool/article/make_video",
+        type: "POST",
+        dataType: "json",
+        data: {
+          t: $("input[data-name=json_file]").val(),
+          imgs: JSON.stringify(imgs)
+        },
+        success: function(data) {
+          return console.log(data);
+        },
+        error: function(data) {
+          return console.log(data);
+        }
+      });
     });
   });
 
