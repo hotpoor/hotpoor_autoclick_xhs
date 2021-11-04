@@ -12,12 +12,14 @@ $ ->
     img_link_with_head_do = (d,h,num)->
         bw = 900
         bh = 1200
-        aw = 200
-        ah = 200
+        aw = 100
+        ah = 100
         cw = 360
         ch = 90
-        pzcx = 100
-        pzcy = 200
+        # pzcx = -500+parseInt(Math.random()*1000)
+        # pzcy = -500+parseInt(Math.random()*1000)
+        pzcx = 0
+        pzcy = 300
         d_w = d.width
         d_h = d.height
         h_w = h.width
@@ -42,7 +44,14 @@ $ ->
             x1 = parseInt(x0 + (bh / d_h * d_w))
         console.log x0,y0,x1,y1
         ct.drawImage(d,0,0,d_w,d_h,x0,y0,x1,y1)
-        ct.drawImage(h,0,0,h_w,h_h,parseInt((bw-aw)/2)+pzcx,parseInt((bh-ah)/2)+pzcy,aw,ah)
+        # ct.drawImage(h,0,0,h_w,h_h,parseInt((bw-aw)/2)+pzcx,parseInt((bh-ah)/2)+pzcy,aw,ah)
+        
+        ct.font = '30px "微软雅黑"'
+        ct.fillStyle = "white"
+        ct.textAlign = "center"
+        ct.textBaseline = "middle"
+        ct.fillText("@"+$(".line_author_info_name").val(), parseInt(bw/2)+pzcx, parseInt(bh/2)+pzcy);
+
         cover_logo = $("#cover_logo")[0]
         ct.drawImage(cover_logo,0,0,1000,250,parseInt((bw-cw)/2)+pzcx,parseInt((bh)/2+ah/2)+pzcy,cw,ch)
         
