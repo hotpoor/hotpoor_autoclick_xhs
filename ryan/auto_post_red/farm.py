@@ -7,7 +7,7 @@ import os
 num = 1
 while True:
     #frank
-    os.system("adb -s a022d1760821 shell input tap 220 1356")
+    os.system("adb -s a022d1760821 shell input tap 800 1300")
     os.system("adb -s a022d1760821 shell input swipe 805 752 144 752 130")
     os.system("adb -s a022d1760821 shell input swipe 805 752 144 752 130")
     os.system("adb -s a022d1760821 shell input swipe 521 499 576 1835 130")

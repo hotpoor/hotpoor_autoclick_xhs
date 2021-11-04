@@ -21,7 +21,6 @@ def select_photos():
 
 # adding photos into phone
 def push_photos():
-
     print(str(loop) + ' files detected. ')
 
     for i in pics:
@@ -79,11 +78,11 @@ def text1():
 def get_short():
     os.system("adb %s shell monkey -p com.android.browser -c android.intent.category.LAUNCHER 1" % a)
     time.sleep(8)
-    os.system('adb %s shell input tap 400 1000' % a)
-    time.sleep(0.7)
-    os.system('adb %s shell input text "http://10.20.30.7:8000/demo/article"' % a)
-    time.sleep(1)
-    os.system('adb %s shell input tap 945 156' % a)
+    # os.system('adb %s shell input tap 400 1000' % a)
+    # time.sleep(0.7)
+    # os.system('adb %s shell input text "http://10.20.30.7:8000/demo/article"' % a)
+    # time.sleep(1)
+    # os.system('adb %s shell input tap 945 156' % a)
 
     os.system('adb %s shell input swipe 235 711 235 711 800' % a)
     time.sleep(1)
@@ -91,6 +90,8 @@ def get_short():
     time.sleep(0.5)
     os.system('adb %s shell input tap 250 808' % a)
     time.sleep(10)
+
+
 
 local_path = '/Users/ryan/Desktop/red/local_web/static/upload/'
 
@@ -100,10 +101,7 @@ if os.path.isfile(local_path + '.DS_store'):
     os.remove(local_path + '.Ds_store')
     print('Ds file deleted!')
 
-# sort file names (place photos with correct pattern)
-pics = os.listdir(local_path)
-pics.sort(reverse=True)
-loop = len(pics)
+
 
 
 a = input('is this for Frank or Carol? pls enter first letter of the name to continue...')
@@ -126,6 +124,11 @@ get_short()
 os.system("adb %s shell monkey -p com.xingin.xhs -c android.intent.category.LAUNCHER 1" % a)
 time.sleep(5)
 #os.system('adb %s shell input tap 544 1849' % a)
+
+# sort file names (place photos with correct pattern)
+pics = os.listdir(local_path)
+pics.sort(reverse=True)
+loop = len(pics)
 
 # --- push photos
 push_photos()
