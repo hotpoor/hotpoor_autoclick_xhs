@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 import dlib
 
-webcam = 0
-# cap = cv2.VideoCapture(0)
+webcam = 1
+cap = cv2.VideoCapture(0)
 
 
 detector = dlib.get_frontal_face_detector()
@@ -13,15 +13,21 @@ predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 def creatBox(img,points,scale =5,masked = False, cropped = True):
     if masked:
         mask = np.zeros_like(img)
+
         mask = cv2.fillPoly(mask,[points],(255,255,255))
+
         img = cv2.bitwise_and(img,mask)
-        cv2.imshow('mask', img)
+
+
     if cropped:
         bbox = cv2.boundingRect(points)
         x,y,w,h = bbox
         imgCrop = img[y:y+h,x:x+w]
+
         imgCrop = cv2.resize(imgCrop,(0,0),None,scale,scale)
+
         return imgCrop
+
     else:
         return mask
 
@@ -51,25 +57,52 @@ while True:
 
         myPoints = np.array(myPoints)
         #imgLeftEye = creatBox(img,myPoints[36:42])
-        imgLips = creatBox(img,myPoints[48:61],3,masked=True,cropped=False)
+        imgLips = creatBox(img,myPoints[48:61],3,masked=False,cropped=True)
+        #cv2.imshow('mask',imgLips)
 
         #imgLipsOringinal = creatBox(img,myPoints[48:61])
 
         imgColorLips = np.zeros_like(imgLips)
         imgColorLips[:] = 41,33,113 #(BGR)
-        cv2.imshow('only lip', imgColorLips)
+
         imgColorLips = cv2.bitwise_and(imgLips,imgColorLips)
-        #修改模糊度，最后一个数值不知道啥意思
-        imgColorLips = cv2.GaussianBlur(imgColorLips,(5,5),5)
-        cv2.imshow('only lip2', imgColorLips)
-        #叠加权重，改数值实现亮度和暗度（个人理解）
-        imgColorLips = cv2.addWeighted(img,1,imgColorLips,-0.25,0)
-        cv2.imshow('Lips new', imgColorLips)
+        #cv2.imshow('only lip', imgColorLips)
+        #修改模糊度
+        imgColorLips = cv2.GaussianBlur(imgColorLips,(3,3),7)
+        #cv2.imshow('only lip2', imgColorLips)
+
+        #cv2.imshow('0',imgColorLips)
+
+        # ---
+        img1 = img.copy()
+
+        imgColorLips = cv2.fillPoly(img1, [myPoints[48:61]],(41,33,113))
+
+        imgColorLips = cv2.addWeighted(img, 0.5, imgColorLips, 0.3, 0.5)
+
+        cv2.putText(imgColorLips, 'MM05', (0, 150), cv2.FONT_HERSHEY_COMPLEX_SMALL, 3, (0, 0, 255), 5)
+
+
+        cv2.imshow('oringainlk',img)
+
+        cv2.imshow('mm05',imgColorLips)
+
+        #cv2.imshow('oringanl',img)
+
+        #------end
+
+
+
+
+        #叠加权重
+        # imgColorLips = cv2.addWeighted(img,1,imgColorLips,-0.5,1)
+        # # cv2.putText(imgColorLips, 'MM05',(0,150), cv2.FONT_HERSHEY_COMPLEX_SMALL, 3, (0, 0, 255), 5)
+        # cv2.imshow('Lips new', imgColorLips)
 
         # cv2.imshow('only lip',imgColorLips)
         #cv2.imshow('Lips',imgLips)
-        print(myPoints)
-    cv2.imshow('orinal', img)
+        print((myPoints[1])[0])
+    #cv2.imshow('orinal', img)
     cv2.waitKey(1)
 
 
