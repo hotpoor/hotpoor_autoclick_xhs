@@ -76,8 +76,8 @@ def text1():
 
 
 def get_short():
-    os.system("adb %s shell monkey -p com.android.browser -c android.intent.category.LAUNCHER 1" % a)
-    time.sleep(8)
+    # os.system("adb %s shell monkey -p com.android.browser -c android.intent.category.LAUNCHER 1" % a)
+    # time.sleep(8)
     # os.system('adb %s shell input tap 400 1000' % a)
     # time.sleep(0.7)
     # os.system('adb %s shell input text "http://10.20.30.7:8000/demo/article"' % a)
@@ -170,6 +170,7 @@ print('used photos deleted!')
 dir = '/Users/ryan/Desktop/red/local_web/static/files/'
 for f in os.listdir(dir):
     os.remove(os.path.join(dir, f))
+
 print('used jsons deleted!')
 
 
