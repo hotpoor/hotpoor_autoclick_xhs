@@ -63,3 +63,28 @@ $ ->
                         """
             error:(data)->
                 dom.text("解析失败")
+
+    $("body").on "click",".CleanCache",(evt)->
+        dom = $(this)
+        $.ajax
+            url:"/api/tool/article/CleanCache"
+            type:"GET"
+            dataType:"Json"
+            data:
+                t:(new Date()).getTime()
+                success:(data)->
+                    console.log data
+                error:(data)->
+                    console.log data
+    $("body").on "click",".MakeVideo",(evt)->
+        dom = $(this)
+        $.ajax
+            url:"/api/tool/article/MakeVideo"
+            type:"GET"
+            dataType:"Json"
+            data:
+                t:(new Date()).getTime()
+                success:(data)->
+                    console.log data
+                error:(data)->
+                    console.log data
