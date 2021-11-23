@@ -52,7 +52,7 @@
         }
       });
     });
-    return $("body").on("click", ".get_json", function(evt) {
+    $("body").on("click", ".get_json", function(evt) {
       var dom;
       dom = $(this);
       dom.text("解析中");
@@ -85,6 +85,42 @@
         },
         error: function(data) {
           return dom.text("解析失败");
+        }
+      });
+    });
+    $("body").on("click", ".CleanCache", function(evt) {
+      var dom;
+      dom = $(this);
+      return $.ajax({
+        url: "/api/tool/article/CleanCache",
+        type: "GET",
+        dataType: "Json",
+        data: {
+          t: (new Date()).getTime(),
+          success: function(data) {
+            return console.log(data);
+          },
+          error: function(data) {
+            return console.log(data);
+          }
+        }
+      });
+    });
+    return $("body").on("click", ".MakeVideo", function(evt) {
+      var dom;
+      dom = $(this);
+      return $.ajax({
+        url: "/api/tool/article/MakeVideo",
+        type: "GET",
+        dataType: "Json",
+        data: {
+          t: (new Date()).getTime(),
+          success: function(data) {
+            return console.log(data);
+          },
+          error: function(data) {
+            return console.log(data);
+          }
         }
       });
     });

@@ -43,6 +43,10 @@
             height: 60px;
             object-fit: cover;
         }
+        .MakeVideo{
+            margin:15px;
+
+        }
 
 
     </style>
@@ -62,18 +66,18 @@
             <button class="line_btns_btn get_info">查询</button>
         </div>
     </div>
-    <div>
-        <div class = 'line title'></div>
-        <div class="line_title">博主头像</div>
-        <div><img class="line_images_div_img jimg" src="/static/icon/icon.jpg"></div>
-        <div class="line_title">博主名称</div>
-        <div class = 'name'><input type="" name="" data-name="poster_name"></div>
-        <div class="line_title">博主id</div>
-        <div class = 'name'><input type="" name="" data-name="poster_id"></div>
-        <div class="line_title">帖子id</div>
-        <div class = 'name'><input type="" name="" data-name="item_id"></div>
+<!--    <div>-->
+<!--        <div class = 'line title'></div>-->
+<!--        <div class="line_title">博主头像</div>-->
+<!--        <div><img class="line_images_div_img jimg" src="/static/icon/icon.jpg"></div>-->
+<!--        <div class="line_title">博主名称</div>-->
+<!--        <div class = 'name'><input type="" name="" data-name="poster_name"></div>-->
+<!--        <div class="line_title">博主id</div>-->
+<!--        <div class = 'name'><input type="" name="" data-name="poster_id"></div>-->
+<!--        <div class="line_title">帖子id</div>-->
+<!--        <div class = 'name'><input type="" name="" data-name="item_id"></div>-->
 
-    </div>
+<!--    </div>-->
     <div class="line">
         <div class="line_title">原文标题</div>
         <div class="line_input"><input id="test1" type="" name="" data-name="article_title"></div>
@@ -84,12 +88,15 @@
         <div class="line_input"><textarea data-name="article_content" id="test2"></textarea></div>
         <button onclick="jsTest2()">Copy</button>
     </div>
+    <button class="MakeVideo">Make Video</button>
+    <button class="CleanCache">Clean Cache</button>
     <div class="line">
         <div class="line_title">原文图片</div>
         <div class="line_images">
             <div><img class="line_images_div_img" src="/static/img/loading.gif"></div>
         </div>
     </div>
+
 
 
 </body>
