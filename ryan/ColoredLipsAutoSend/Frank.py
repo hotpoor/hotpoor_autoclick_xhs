@@ -24,17 +24,20 @@ while True:
 
     newList=[]
     for i in os.listdir('pics/final'):
-        if '1x1%s'%count in i or '2x2%s'%count in i:
-            newList.append(i)
-        if '3x3%s'%count in i:
+        if count == i[3:-4] or 'd'+count ==i[3:-4]:
             newList.append(i)
 
+
     list = os.listdir('pics/final')
+    newList.sort()
+    print(newList)
     NewList=[]
-    num=random.sample((0,1),2)
+    num=random.sample((0,1,2),3)
+    print(num)
     NewList.append(newList[num[0]])
     NewList.append(newList[num[1]])
-    NewList.append(newList[2])
+    NewList.append(newList[num[2]])
+    NewList.append(newList[3])
     loop = len(NewList) +1
     print(NewList)
     print(loop)
@@ -65,8 +68,10 @@ while True:
     push_photos(loop,a,NewList)
 
     #open red
-    os.system("adb %s shell monkey -p com.xingin.xhs -c android.intent.category.LAUNCHER 1" % a)
+    os.system('adb %s shell am force-stop com.xingin.xhs'% a)
     time.sleep(1)
+    os.system("adb %s shell monkey -p com.xingin.xhs -c android.intent.category.LAUNCHER 1" % a)
+    time.sleep(10)
     # press new button
     os.system('adb %s shell input tap 544 2150' % a)
     time.sleep(0.5)
@@ -92,7 +97,7 @@ while True:
     time.sleep(0.5)
 
     def text():
-        n = randrange(1,3)
+        n = randrange(1,26)
         f = open('%s.txt'%n)
         print('choosing text example number: %s'% n)
         for line in f:
@@ -112,7 +117,7 @@ while True:
     #done
     os.system('adb %s shell input tap 580 2111' % a)
     # click done
-    time.sleep(10)
+    time.sleep(15)
     os.system('adb %s shell input tap 540 2135' % a)
     # to mine
     os.system('adb %s shell input tap 976 2153' % a)
@@ -120,17 +125,21 @@ while True:
     farmCount = 0
     farm = True
     while farm:
+        time.sleep(0.5)
         os.system("adb -s a022d1760821 shell input tap 800 1300")
-        os.system("adb -s a022d1760821 shell input swipe 805 752 144 752 130")
-        os.system("adb -s a022d1760821 shell input swipe 805 752 144 752 130")
-        os.system("adb -s a022d1760821 shell input swipe 521 499 576 1835 130")
-        os.system("adb -s a022d1760821 shell input swipe 576 1835 521 499 130")
-        os.system("adb -s a022d1760821 shell input tap 67 158")
+        time.sleep(0.3)
+        os.system("adb -s a022d1760821 shell input swipe 900 900 300 900 130")
+        os.system("adb -s a022d1760821 shell input swipe 900 900 300 900 130")
+        os.system("adb -s a022d1760821 shell input swipe 900 900 300 900 130")
+        time.sleep(0.3)
+        os.system("adb -s a022d1760821 shell input tap 759 2280")
+
         farmCount += 1
         print('loop count: %s' % farmCount)
-        if farmCount == 350:
+        if farmCount == 500:
             farm = False
-            cdone = 1
+            os.system('adb %s shell am force-stop com.xingin.xhs' % a)
+            time.sleep(1)
 
 
 

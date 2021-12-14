@@ -6,7 +6,7 @@ import numpy as np
 from cv2 import imread, imwrite
 from fourfaces import x4faces
 from twofaces import x2faces
-
+from fourfacesDior import x4facesDior
 def x3faces(num):
     imgs, heights, widths = [], [], []
     # read imgs
@@ -45,6 +45,7 @@ def x3faces(num):
     imwrite("pics/final/3x3%s.jpg"% num, img9)
     x2faces(num)
     x4faces(num)
+    x4facesDior(num)
 
     #cv2.imshow('9',img9)
 
